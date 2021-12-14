@@ -1,0 +1,8 @@
+syntax = "proto3";
+package fragma.core.v1;
+
+option go_package = "github.com/mmbednarek/fragma/api/fragma/core/v1";
+
+message Volume {
+  string path = 1;
+}
