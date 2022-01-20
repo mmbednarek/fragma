@@ -34,7 +34,8 @@ func main() {
 	}
 
 	options := &core.RunOptions{
-		Arguments: os.Args[1:],
+		Arguments:        os.Args[1:],
+		ShareHostNetwork: false,
 	}
 
 	log.With(ctx).Info("starting application")

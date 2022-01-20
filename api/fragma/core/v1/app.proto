@@ -11,4 +11,5 @@ message Application {
 message RunOptions {
   repeated string arguments = 1;
   map<string, string> environment = 2;
+  bool share_host_network = 3;
 }

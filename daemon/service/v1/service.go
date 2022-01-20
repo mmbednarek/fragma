@@ -52,15 +52,10 @@ func (s *Service) RunApplication(ctx context.Context, volume *core.Volume, appli
 
 	log.With(ctx, "gid", gid, "uid", uid).Info("running with")
 
-	if err := syscall.Mount("/dev", mount.Path+"/dev", "", syscall.MS_BIND, ""); err != nil {
-		os.Exit(1)
+	cloneFlags := syscall.CLONE_NEWIPC | syscall.CLONE_NEWNS | syscall.CLONE_NEWPID | syscall.CLONE_NEWUTS
+	if !options.ShareHostNetwork {
+		cloneFlags |= syscall.CLONE_NEWNET
 	}
-	defer syscall.Unmount(mount.Path+"/dev", 0)
-
-	if err := syscall.Mount("/proc", mount.Path+"/proc", "", syscall.MS_BIND, ""); err != nil {
-		os.Exit(1)
-	}
-	defer syscall.Unmount(mount.Path+"/proc", 0)
 
 	cmd.Dir = "/root"
 	cmd.Args = options.Arguments
@@ -70,24 +65,12 @@ func (s *Service) RunApplication(ctx context.Context, volume *core.Volume, appli
 			Uid: 0,
 			Gid: 0,
 		},
-		Cloneflags:   syscall.CLONE_NEWNET | syscall.CLONE_NEWIPC | syscall.CLONE_NEWNS | syscall.CLONE_NEWPID,
-		Unshareflags: linux.CLONE_FS,
+		Cloneflags: uintptr(cloneFlags),
 	}
 
 	if err := cmd.Start(); err != nil {
 		return fmt.Errorf("cmd.Run: %w", err)
 	}
-
-	//ns, err := namespace.FindNamespaceByPid(namespace.ResourceNetwork, process.Pid(cmd.Process.Pid))
-	//if err != nil {
-	//	return err
-	//}
-	//
-	//log.Printf("process namespace: %v\n", ns.Id)
-	//
-	//if err := namespace.SetNamespace(&ns); err != nil {
-	//	return err
-	//}
 
 	if err := cmd.Wait(); err != nil {
 		return fmt.Errorf("cmd.Wait: %w", err)
