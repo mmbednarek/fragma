@@ -1,0 +1,8 @@
+kind: fragma.core.v1.Application
+metadata:
+  name: ls
+  labels: {}
+  annotations: {}
+spec:
+  name: ls
+  path: /bin/ls

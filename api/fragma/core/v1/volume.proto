@@ -3,6 +3,12 @@ package fragma.core.v1;
 
 option go_package = "github.com/mmbednarek/fragma/api/fragma/core/v1";
 
+message VolumeStatus {
+  int64 size = 1;
+  int64 free_space = 2;
+}
+
 message Volume {
   string path = 1;
+  VolumeStatus status = 2;
 }

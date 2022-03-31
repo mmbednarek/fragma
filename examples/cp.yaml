@@ -1,0 +1,9 @@
+kind: fragma.core.v1.Application
+metadata:
+  name: cp
+  labels:
+    binary-kind: core-utils
+  annotations: {}
+spec:
+  name: cp
+  path: /usr/bin/cp

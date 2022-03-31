@@ -1,0 +1,18 @@
+syntax = "proto3";
+package fragma.core.v1;
+
+option go_package = "github.com/mmbednarek/fragma/api/fragma/core/v1";
+
+import "google/protobuf/any.proto";
+
+message Metadata {
+  string name = 1;
+  map<string, string> labels = 2;
+  map<string, string> annotations = 3;
+}
+
+message Object {
+  string kind = 1;
+  Metadata metadata = 2;
+  google.protobuf.Any spec = 3;
+}

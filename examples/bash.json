@@ -1,0 +1,10 @@
+{
+  "kind": "fragma.core.v1.Application",
+  "metadata": {
+    "name": "bash"
+  },
+  "spec": {
+    "name": "bash",
+    "path": "/usr/bin/bash"
+  }
+}
